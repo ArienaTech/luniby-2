@@ -1,0 +1,101 @@
+## Behavioral Changes Detection Fix - Merged Patch
+
+### Problem
+The `behavioralChanges` criteria was consistently showing as `false` even when users provided behavioral information (like "none" responses), preventing triage completion at 6/7 criteria (90%).
+
+### Root Cause
+The AI criteria detection and fallback logic weren't recognizing simple responses like "none", "no", "nothing", "nope" as valid behavioral information when users indicated no behavioral changes.
+
+### Solution
+Enhanced both the OpenAI service criteria detection and triage service fallback logic to properly recognize simple negative responses as valid behavioral information.
+
+---
+
+## File 1: /workspace/src/services/openaiService.js
+
+### Change 1: Enhanced behavioral changes criteria definition (Line 521)
+```javascript
+// BEFORE:
+- behavioralChanges: Changes in behavior, activity, energy levels, or normal routines explicitly described by user (e.g., "more lethargic", "less active", "hiding", "no changes in behavior", "acting normal", "same as usual")
+
+// AFTER:
+- behavioralChanges: Changes in behavior, activity, energy levels, or normal routines explicitly described by user (e.g., "more lethargic", "less active", "hiding", "no changes in behavior", "acting normal", "same as usual") OR simple responses indicating behavioral status like "none", "no", "nothing", "nope"
+```
+
+### Change 2: Enhanced behavioral changes detection instructions (Line 536-541)
+```javascript
+// BEFORE:
+IMPORTANT: Mark "behavioralChanges" as TRUE if the user mentions ANYTHING about:
+- Changes in activity level ("more lethargic", "less active", "more energetic")
+- Changes in behavior ("hiding", "clingy", "aggressive", "withdrawn")
+- Changes in routine ("sleeping more", "not playing", "restless")
+- Statements about NO changes ("no changes", "acting normal", "same as usual", "no behavioral changes")
+
+// AFTER:
+IMPORTANT: Mark "behavioralChanges" as TRUE if the user mentions ANYTHING about:
+- Changes in activity level ("more lethargic", "less active", "more energetic")
+- Changes in behavior ("hiding", "clingy", "aggressive", "withdrawn")
+- Changes in routine ("sleeping more", "not playing", "restless")
+- Statements about NO changes ("no changes", "acting normal", "same as usual", "no behavioral changes")
+- Simple responses indicating no behavioral issues ("none", "no", "nothing", "nope", "not really")
+```
+
+### Change 3: Enhanced contextual analysis instructions (Line 573)
+```javascript
+// BEFORE:
+- If an AI message asks about behavior/behavioral changes, and the user responds with "no changes", "acting normal", "same as usual", etc., mark behavioralChanges as TRUE.
+
+// AFTER:
+- If an AI message asks about behavior/behavioral changes, and the user responds with "no changes", "acting normal", "same as usual", "none", "no", "nothing", "nope", etc., mark behavioralChanges as TRUE.
+```
+
+---
+
+## File 2: /workspace/src/services/triageService.js
+
+### Change 4: Enhanced fallback logic regex pattern (Line 174-180)
+```javascript
+// BEFORE:
+const providedBehaviorInfo = userMessages.some(msg => 
+  msg.content && (
+    /\b(behavior|activity|acting|routine|lethargic|active|hiding|normal|changes|same)\b/i.test(msg.content) ||
+    // "no changes" responses when behavior was asked about
+    (askedAboutBehavior && /\b(no changes|no change|same|normal|usual|fine)\b/i.test(msg.content.toLowerCase()))
+  )
+);
+
+// AFTER:
+const providedBehaviorInfo = userMessages.some(msg => 
+  msg.content && (
+    /\b(behavior|activity|acting|routine|lethargic|active|hiding|normal|changes|same)\b/i.test(msg.content) ||
+    // "no changes" responses when behavior was asked about
+    (askedAboutBehavior && /\b(no changes|no change|same|normal|usual|fine|none|nothing|nope|not really)\b/i.test(msg.content.toLowerCase()))
+  )
+);
+```
+
+---
+
+## Expected Behavior After Fix
+
+1. **AI Detection**: When users respond with "none" to behavioral changes questions, the AI will properly mark `behavioralChanges` as `true`
+
+2. **Fallback Logic**: If the AI misses simple responses, the fallback logic will catch patterns like "none", "nothing", "nope", "not really"
+
+3. **Progress Completion**: The triage will advance from 6/7 (90%) to 7/7 (100%) criteria when behavioral information is provided
+
+4. **Triage Completion**: The assessment will complete properly instead of getting stuck at the "Finalizing" stage
+
+## Testing
+To verify the fix works:
+1. Start a triage session
+2. Provide information for 6 criteria
+3. When asked about behavioral changes, respond with "none" or "no"
+4. Verify that `behavioralChanges` shows as `true` in console logs
+5. Confirm progress advances to 100% and assessment completes
+
+## Impact
+- Resolves the stuck triage issue at 90% completion
+- Improves user experience by properly recognizing valid responses
+- Maintains data accuracy by correctly interpreting "none" as "no behavioral changes"
+- Ensures all 7 criteria can be collected for complete assessments

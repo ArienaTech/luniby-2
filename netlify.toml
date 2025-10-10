@@ -1,0 +1,15 @@
+[build]
+  publish = "build"
+  command = "npm run build"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Environment variables (you'll need to set these in Netlify dashboard)
+# SENDGRID_API_KEY = "your-sendgrid-api-key"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

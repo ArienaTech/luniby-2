@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Contact Form</title>
+</head>
+<body>
+    <h1>Test Contact Form</h1>
+    <button onclick="testContactForm()">Test Contact Form</button>
+    <div id="result"></div>
+
+    <script>
+        async function testContactForm() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sending test email...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to: 'hello@luniby.com',
+                        subject: 'Test Contact Form - Luni Triage',
+                        html: `
+                            <h2>Test Contact Form Submission</h2>
+                            <p><strong>Name:</strong> Test User</p>
+                            <p><strong>Email:</strong> test@example.com</p>
+                            <p><strong>Inquiry Type:</strong> General inquiry</p>
+                            <p><strong>Message:</strong> This is a test message to verify the contact form is working.</p>
+                        `,
+                        text: `
+                            Test Contact Form Submission
+                            
+                            Name: Test User
+                            Email: test@example.com
+                            Inquiry Type: General inquiry
+                            Message: This is a test message to verify the contact form is working.
+                        `
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<span style="color: green;">✅ Success! Email sent to hello@luniby.com</span>';
+                    console.log('Email sent successfully:', data);
+                } else {
+                    resultDiv.innerHTML = '<span style="color: red;">❌ Error: ' + (data.error || 'Unknown error') + '</span>';
+                    console.error('Email error:', data);
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<span style="color: red;">❌ Network error: ' + error.message + '</span>';
+                console.error('Network error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

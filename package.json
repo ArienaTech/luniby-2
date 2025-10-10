@@ -1,0 +1,56 @@
+{
+  "name": "responsive-navbar-website",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
+    "@sentry/react": "^10.0.0",
+    "@sentry/tracing": "^7.120.4",
+    "@supabase/supabase-js": "^2.55.0",
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.1",
+    "openai": "^5.10.2",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0",
+    "react-scripts": "5.0.1",
+    "twilio": "^5.8.0",
+    "uuid": "^11.1.0"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "CI=false craco build",
+    "build:ci": "craco build",
+    "test": "craco test --watchAll=false",
+    "test:watch": "craco test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "clean": "rm -rf build node_modules/.cache",
+    "analyze": "npm run build && npx source-map-explorer 'build/static/js/*.js'",
+    "build:original": "CI=false react-scripts build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@eslint/js": "^9.32.0",
+    "autoprefixer": "^10.4.12",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8"
+  }
+}
