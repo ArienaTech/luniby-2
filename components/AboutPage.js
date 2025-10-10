@@ -1,0 +1,331 @@
+import React from 'react';
+
+const AboutPage = () => {
+  const teamMembers = [
+    {
+      name: 'Camille Saber',
+      role: 'Co-founder, CEO',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/camille%20(1).png',
+      linkedin: 'https://www.linkedin.com/in/jeancamilledeguzman',
+      description: 'Visionary leader driving the future of AI-powered veterinary care.'
+    },
+    {
+      name: 'Ariena Phannaen',
+      role: 'Co-founder, CTO & Lead Designer',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/ari%20(1).png',
+      linkedin: 'https://www.linkedin.com/in/arienaphannaen/',
+      description: 'Technical architect and design visionary behind our cutting-edge AI triage system and user experience.'
+    },
+    {
+      name: 'Riya Sharma',
+      role: 'Co-founder, CMO',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/riya%20(1).png',
+      linkedin: 'https://www.linkedin.com/in/riya-sharma-683b67205',
+      description: 'Marketing strategist connecting our platform with the veterinary community.'
+    },
+    {
+      name: 'Aafia Imran',
+      role: 'Business Analyst',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/aafia%20(1).png',
+      linkedin: 'https://www.linkedin.com/in/aafia-imran-a449a3b5/',
+      description: 'Data-driven insights specialist optimizing our platform performance.'
+    },
+    {
+      name: 'Zachary Orbell',
+      role: 'Business Analyst',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/zac%20(1).png',
+      linkedin: 'https://www.linkedin.com/in/zac-orbell-326239252',
+      description: 'Strategic analyst ensuring our solutions meet market needs.'
+    }
+  ];
+
+  const boardMembers = [
+    {
+      name: 'Dr. Alison Pickering',
+      role: 'Veterinary Expert Advisor',
+      experience: '30+ years in veterinary practice across NZ, AU and UK',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/dr.alison.png',
+      linkedin: 'https://www.linkedin.com/in/alison-pickering-a552a755/',
+      youtube: 'https://www.youtube.com/@VetAroundTheWorld',
+      description: 'Globally experienced veterinarian specializing in telehealth, wearable tech, and AI-integrated pet health. Currently serves as Chief Veterinary Officer for ZiggyWell and consults for PawSquad and Omni Pet Care. Creator of "Vet Around the World" YouTube channel, providing clinical guidance and educational oversight for our AI triage system.'
+    },
+    {
+      name: 'Alya Zamri',
+      role: 'Vet Nurse Advisor',
+      experience: 'Registered Veterinary Nurse & Certified Clinical Coach',
+      image: 'https://wagrmmbkukwblfpfxxcb.supabase.co/storage/v1/object/public/web-img/alya.jpg',
+      linkedin: 'https://www.linkedin.com/in/alya-zamri-90aa151b3',
+      description: 'Winner of the prestigious NZVNA Angela Payne Award (2025) and Stantec Equity & Diversity Scholarship recipient. Brings frontline clinical expertise to our AI development with deep knowledge of veterinary nursing workflows, triage protocols, and emergency response. Her clinical coaching experience ensures our system meets real-world veterinary practice needs.'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* About Section */}
+      <div className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            {/* Animated Title */}
+            <div className="relative">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+                About Luniby
+              </h1>
+              {/* AI Pulse Effect */}
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#5EB47C] rounded-full animate-pulse opacity-75"></div>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#5EB47C] rounded-full animate-ping"></div>
+            </div>
+            
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-slide-up">
+              AI-powered veterinary triage technology serving pet owners, clinics, and vet schools across Australia and New Zealand.
+            </p>
+          </div>
+
+          {/* Animated Impact Stats */}
+          <div className="bg-gray-900 rounded-2xl p-8 text-white text-center max-w-4xl mx-auto relative overflow-hidden">
+            {/* Background Animation */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-green-600/10 animate-pulse"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#5EB47C] to-transparent animate-slide-right"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-2xl font-bold mb-6 animate-fade-in-delay">
+                Our Mission: Save 90,000+ Pets' Lives
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="group hover:scale-105 transition-transform duration-300">
+                  <div className="text-2xl font-bold text-[#5EB47C] group-hover:animate-bounce">50k+</div>
+                  <p className="text-gray-300 text-sm">Better vet training</p>
+                  <div className="w-full h-1 bg-gray-700 rounded-full mt-2 overflow-hidden">
+                    <div className="h-full bg-[#5EB47C] rounded-full animate-fill-bar" style={{width: '85%'}}></div>
+                  </div>
+                </div>
+                <div className="group hover:scale-105 transition-transform duration-300">
+                  <div className="text-2xl font-bold text-[#5EB47C] group-hover:animate-bounce">6k+</div>
+                  <p className="text-gray-300 text-sm">Emergency detections</p>
+                  <div className="w-full h-1 bg-gray-700 rounded-full mt-2 overflow-hidden">
+                    <div className="h-full bg-[#5EB47C] rounded-full animate-fill-bar-delay-1" style={{width: '65%'}}></div>
+                  </div>
+                </div>
+                <div className="group hover:scale-105 transition-transform duration-300">
+                  <div className="text-2xl font-bold text-[#5EB47C] group-hover:animate-bounce">36k+</div>
+                  <p className="text-gray-300 text-sm">Clinic outcomes</p>
+                  <div className="w-full h-1 bg-gray-700 rounded-full mt-2 overflow-hidden">
+                    <div className="h-full bg-[#5EB47C] rounded-full animate-fill-bar-delay-2" style={{width: '75%'}}></div>
+                  </div>
+                </div>
+                <div className="group hover:scale-105 transition-transform duration-300">
+                  <div className="text-2xl font-bold text-[#5EB47C] group-hover:animate-bounce">90k+</div>
+                  <p className="text-gray-300 text-sm">Total lives saved</p>
+                  <div className="w-full h-1 bg-gray-700 rounded-full mt-2 overflow-hidden">
+                    <div className="h-full bg-[#5EB47C] rounded-full animate-fill-bar-delay-3" style={{width: '100%'}}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Floating AI Particles */}
+            <div className="absolute top-4 left-4 w-2 h-2 bg-[#5EB47C] rounded-full animate-float opacity-60"></div>
+            <div className="absolute top-8 right-6 w-1 h-1 bg-blue-400 rounded-full animate-float-delay opacity-40"></div>
+            <div className="absolute bottom-6 left-8 w-1.5 h-1.5 bg-green-400 rounded-full animate-float-delay-2 opacity-50"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Advisory Board Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Advisory Board</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our advisory board brings decades of veterinary expertise to guide our AI development 
+              and ensure clinical excellence.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {boardMembers.map((member, index) => (
+              <div key={index} className="advisory-card bg-gradient-to-br from-green-50 to-white rounded-2xl shadow-lg overflow-hidden border border-green-100 hover:border-[#5EB47C]">
+                <div className="p-8">
+                  <div className="flex flex-col items-center text-center">
+                    {/* Animated Photo */}
+                    <div className="flex-shrink-0 mb-6">
+                      <div className="w-32 h-32 rounded-full overflow-hidden animate-glow ring-2 ring-[#5EB47C]/20 hover:ring-[#5EB47C]/50 transition-all duration-300">
+                        <img 
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-[#5EB47C] font-medium mb-2">{member.role}</p>
+                      <p className="text-gray-600 font-medium mb-4">{member.experience}</p>
+                      <p className="text-gray-700 mb-6 leading-relaxed">{member.description}</p>
+                      
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                          </svg>
+                          LinkedIn
+                        </a>
+                        {member.youtube && (
+                          <a
+                            href={member.youtube}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            @VetAroundTheWorld
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Team Section */}
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Meet Our Team</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our diverse team combines veterinary expertise, cutting-edge technology, and business acumen 
+              to revolutionize pet healthcare.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {teamMembers.map((member, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <div className="aspect-square bg-gray-200">
+                  <img 
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-[#5EB47C] font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm mb-4">{member.description}</p>
+                  
+                  <div className="flex justify-center">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                      LinkedIn
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+
+      {/* Company Values */}
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Values</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="bg-blue-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Safety First</h3>
+              <p className="text-gray-600 text-sm">Every feature is designed with pet safety and professional standards as our top priority</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-green-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Innovation</h3>
+              <p className="text-gray-600 text-sm">Pushing the boundaries of what's possible in veterinary care through AI and technology</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-purple-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Education</h3>
+              <p className="text-gray-600 text-sm">Committed to advancing veterinary education and professional development</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-orange-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Global Impact</h3>
+              <p className="text-gray-600 text-sm">Building solutions that improve pet healthcare across Australia, New Zealand, and beyond</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="py-16 bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex justify-center mb-6">
+            <div className="bg-white/10 p-3 rounded-full">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Want to Join Our Mission?
+          </h2>
+          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            We're always looking for passionate individuals who want to revolutionize pet healthcare. 
+            Get in touch if you'd like to be part of our journey.
+          </p>
+          <div className="flex justify-center">
+            <a
+              href="/contact"
+              className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AboutPage;
