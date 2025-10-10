@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Cleanup Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .test-section { 
+            background: white; 
+            margin: 20px 0; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+        }
+        button:hover { background: #005a8b; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        pre { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 4px; 
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .stat-card {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧹 Cache Cleanup Test Page</h1>
+    <p>This page tests the cache cleanup functionality for the Luniby website.</p>
+
+    <div class="test-section">
+        <h2>📊 Current Cache Status</h2>
+        <button onclick="checkCacheStatus()">Check Cache Status</button>
+        <button onclick="diagnoseCache()">Run Diagnostics</button>
+        <div id="cacheStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🗑️ Cache Cleanup Actions</h2>
+        <button onclick="clearAllCaches()">Clear All Caches</button>
+        <button onclick="clearSpecificCache('serviceWorker')">Clear Service Worker</button>
+        <button onclick="clearSpecificCache('localStorage')">Clear localStorage</button>
+        <button onclick="clearSpecificCache('indexedDB')">Clear IndexedDB</button>
+        <button onclick="optimizeCaches()">Optimize Caches</button>
+        <div id="cleanupResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Test Cache Population</h2>
+        <button onclick="populateTestCaches()">Populate Test Caches</button>
+        <button onclick="clearTestCaches()">Clear Test Caches</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📈 Performance Metrics</h2>
+        <button onclick="showMetrics()">Show Cache Metrics</button>
+        <div id="metricsResults"></div>
+    </div>
+
+    <script>
+        // Simulate the cache utilities for testing
+        window.testCacheData = new Map();
+
+        // Mock functions for testing
+        window.getCacheInfo = async function() {
+            return {
+                serviceWorker: {
+                    supported: 'caches' in window,
+                    caches: await (window.caches ? caches.keys() : Promise.resolve([]))
+                },
+                localStorage: {
+                    supported: 'localStorage' in window,
+                    itemCount: localStorage.length,
+                    cacheItems: Array.from({length: localStorage.length}, (_, i) => localStorage.key(i))
+                        .filter(key => key && (key.includes('cache') || key.includes('temp')))
+                },
+                sessionStorage: {
+                    supported: 'sessionStorage' in window,
+                    itemCount: sessionStorage.length
+                },
+                indexedDB: {
+                    supported: 'indexedDB' in window,
+                    databases: []
+                }
+            };
+        };
+
+        window.clearAllCaches = async function() {
+            let cleared = 0;
+            
+            // Clear service worker caches
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+                cleared += cacheNames.length;
+            }
+            
+            // Clear localStorage cache items
+            const cacheKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('cache') || key.includes('temp'))) {
+                    cacheKeys.push(key);
+                }
+            }
+            cacheKeys.forEach(key => localStorage.removeItem(key));
+            cleared += cacheKeys.length;
+            
+            // Clear sessionStorage
+            const sessionCount = sessionStorage.length;
+            sessionStorage.clear();
+            cleared += sessionCount;
+            
+            return { success: true, cleared };
+        };
+
+        window.clearSpecificCache = async function(type) {
+            let cleared = 0;
+            
+            switch(type) {
+                case 'serviceWorker':
+                    if ('caches' in window) {
+                        const cacheNames = await caches.keys();
+                        await Promise.all(cacheNames.map(name => caches.delete(name)));
+                        cleared = cacheNames.length;
+                    }
+                    break;
+                case 'localStorage':
+                    const cacheKeys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && (key.includes('cache') || key.includes('temp'))) {
+                            cacheKeys.push(key);
+                        }
+                    }
+                    cacheKeys.forEach(key => localStorage.removeItem(key));
+                    cleared = cacheKeys.length;
+                    break;
+                case 'indexedDB':
+                    // Mock IndexedDB clearing
+                    cleared = 1;
+                    break;
+            }
+            
+            return { success: true, cleared, type };
+        };
+
+        window.diagnoseCaches = async function() {
+            const info = await getCacheInfo();
+            const totalItems = 
+                info.serviceWorker.caches.length +
+                info.localStorage.cacheItems.length +
+                info.sessionStorage.itemCount;
+            
+            console.log('🔍 Cache Diagnostic Report');
+            console.log('Service Worker Caches:', info.serviceWorker.caches);
+            console.log('localStorage Cache Items:', info.localStorage.cacheItems);
+            console.log('sessionStorage Items:', info.sessionStorage.itemCount);
+            console.log(`📊 Total cached items: ${totalItems}`);
+            
+            if (totalItems > 50) {
+                console.log('⚠️ High cache usage detected');
+            }
+            
+            return { ...info, totalItems };
+        };
+
+        // Test functions
+        async function checkCacheStatus() {
+            const statusDiv = document.getElementById('cacheStatus');
+            statusDiv.innerHTML = '<p>Checking cache status...</p>';
+            
+            try {
+                const info = await getCacheInfo();
+                const html = `
+                    <div class="stats">
+                        <div class="stat-card">
+                            <strong>Service Worker</strong><br>
+                            ${info.serviceWorker.caches.length} caches
+                        </div>
+                        <div class="stat-card">
+                            <strong>localStorage</strong><br>
+                            ${info.localStorage.itemCount} items<br>
+                            (${info.localStorage.cacheItems.length} cache items)
+                        </div>
+                        <div class="stat-card">
+                            <strong>sessionStorage</strong><br>
+                            ${info.sessionStorage.itemCount} items
+                        </div>
+                        <div class="stat-card">
+                            <strong>IndexedDB</strong><br>
+                            ${info.indexedDB.supported ? 'Supported' : 'Not supported'}
+                        </div>
+                    </div>
+                    <pre>${JSON.stringify(info, null, 2)}</pre>
+                `;
+                statusDiv.innerHTML = html;
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function diagnoseCache() {
+            const statusDiv = document.getElementById('cacheStatus');
+            statusDiv.innerHTML = '<p>Running diagnostics...</p>';
+            
+            try {
+                const result = await diagnoseCaches();
+                const html = `
+                    <h3 class="success">✅ Diagnostics Complete</h3>
+                    <p><strong>Total Cache Items:</strong> ${result.totalItems}</p>
+                    ${result.totalItems > 50 ? '<p class="warning">⚠️ High cache usage detected</p>' : '<p class="success">✅ Cache usage is normal</p>'}
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+                statusDiv.innerHTML = html;
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function clearAllCaches() {
+            const resultsDiv = document.getElementById('cleanupResults');
+            resultsDiv.innerHTML = '<p>Clearing all caches...</p>';
+            
+            try {
+                const result = await window.clearAllCaches();
+                resultsDiv.innerHTML = `
+                    <h3 class="success">✅ All Caches Cleared</h3>
+                    <p><strong>Items Cleared:</strong> ${result.cleared}</p>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function clearSpecificCache(type) {
+            const resultsDiv = document.getElementById('cleanupResults');
+            resultsDiv.innerHTML = `<p>Clearing ${type} cache...</p>`;
+            
+            try {
+                const result = await window.clearSpecificCache(type);
+                resultsDiv.innerHTML = `
+                    <h3 class="success">✅ ${type} Cache Cleared</h3>
+                    <p><strong>Items Cleared:</strong> ${result.cleared}</p>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function optimizeCaches() {
+            const resultsDiv = document.getElementById('cleanupResults');
+            resultsDiv.innerHTML = '<p>Optimizing caches...</p>';
+            
+            // Mock optimization
+            setTimeout(() => {
+                resultsDiv.innerHTML = `
+                    <h3 class="success">✅ Cache Optimization Complete</h3>
+                    <p>Memory cache optimized, expired items removed</p>
+                `;
+            }, 1000);
+        }
+
+        function populateTestCaches() {
+            const resultsDiv = document.getElementById('testResults');
+            
+            // Populate localStorage with test data
+            for (let i = 0; i < 10; i++) {
+                localStorage.setItem(`test_cache_${i}`, JSON.stringify({
+                    id: i,
+                    data: `Test data ${i}`,
+                    timestamp: Date.now()
+                }));
+            }
+            
+            // Populate sessionStorage
+            for (let i = 0; i < 5; i++) {
+                sessionStorage.setItem(`temp_data_${i}`, `Temporary data ${i}`);
+            }
+            
+            resultsDiv.innerHTML = `
+                <h3 class="success">✅ Test Caches Populated</h3>
+                <p>Added 10 localStorage items and 5 sessionStorage items</p>
+            `;
+        }
+
+        function clearTestCaches() {
+            const resultsDiv = document.getElementById('testResults');
+            
+            // Clear test data from localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('test_cache_')) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            // Clear sessionStorage
+            sessionStorage.clear();
+            
+            resultsDiv.innerHTML = `
+                <h3 class="success">✅ Test Caches Cleared</h3>
+                <p>Removed ${keysToRemove.length} localStorage items and cleared sessionStorage</p>
+            `;
+        }
+
+        function showMetrics() {
+            const metricsDiv = document.getElementById('metricsResults');
+            
+            const mockMetrics = {
+                hits: Math.floor(Math.random() * 100),
+                misses: Math.floor(Math.random() * 20),
+                errors: Math.floor(Math.random() * 5),
+                uptime: Date.now() - (Math.random() * 3600000), // Random uptime up to 1 hour
+                hitRate: '85.2'
+            };
+            
+            const html = `
+                <div class="stats">
+                    <div class="stat-card">
+                        <strong>Cache Hits</strong><br>
+                        ${mockMetrics.hits}
+                    </div>
+                    <div class="stat-card">
+                        <strong>Cache Misses</strong><br>
+                        ${mockMetrics.misses}
+                    </div>
+                    <div class="stat-card">
+                        <strong>Hit Rate</strong><br>
+                        ${mockMetrics.hitRate}%
+                    </div>
+                    <div class="stat-card">
+                        <strong>Errors</strong><br>
+                        ${mockMetrics.errors}
+                    </div>
+                </div>
+                <pre>${JSON.stringify(mockMetrics, null, 2)}</pre>
+            `;
+            metricsDiv.innerHTML = html;
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Cache Cleanup Test Page Loaded');
+            console.log('Available functions:', Object.keys(window).filter(key => 
+                key.startsWith('clear') || key.startsWith('get') || key.startsWith('diagnose')
+            ));
+        });
+    </script>
+</body>
+</html>
