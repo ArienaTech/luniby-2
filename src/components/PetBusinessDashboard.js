@@ -24,7 +24,7 @@ const BusinessOverview = ({ user, profile }) => {
     }
 
     try {
-      const { data, error } = await productService.getBusinessStats(user.id);
+      const { data: products, error } = await productService.getProducts({ providerId: user.id });
       
       if (error) {
         console.error('Error loading business stats:', error);
@@ -36,11 +36,15 @@ const BusinessOverview = ({ user, profile }) => {
           ordersThisMonth: 0
         });
       } else {
+        // Calculate stats from products
+        const totalProducts = products.length;
+        const totalStockValue = products.reduce((sum, p) => sum + (p.price * p.stock_quantity), 0);
+        
         setStats({
-          monthlyRevenue: Math.round(data.totalStockValue * 0.1), // Estimate 10% of inventory value as monthly revenue
-          activeCustomers: Math.floor(data.totalProducts * 2.5), // Estimate customers based on product count
-          productsInStock: data.totalProducts,
-          ordersThisMonth: Math.floor(data.totalProducts * 0.3) // Estimate orders
+          monthlyRevenue: Math.round(totalStockValue * 0.1), // Estimate 10% of inventory value as monthly revenue
+          activeCustomers: Math.floor(totalProducts * 2.5), // Estimate customers based on product count
+          productsInStock: totalProducts,
+          ordersThisMonth: Math.floor(totalProducts * 0.3) // Estimate orders
         });
       }
     } catch (error) {
@@ -229,7 +233,7 @@ const TopProductsWidget = ({ user }) => {
     }
 
     try {
-      const { data, error } = await productService.getProducts(user.id);
+      const { data, error } = await productService.getProducts({ providerId: user.id });
       
       if (error) {
         console.error('Error loading top products:', error);
@@ -333,7 +337,7 @@ const ProductCatalog = ({ user, profile }) => {
       setLoading(true);
       setError(null);
       
-      const { data, error: fetchError } = await productService.getProducts(user.id);
+      const { data, error: fetchError } = await productService.getProducts({ providerId: user.id });
       
       if (fetchError) {
         console.error('Error loading products:', fetchError);
@@ -1295,7 +1299,7 @@ const InventoryManagement = ({ user, profile }) => {
     }
 
     try {
-      const { data, error } = await productService.getProducts(user.id);
+      const { data, error } = await productService.getProducts({ providerId: user.id });
       
       if (error) {
         console.error('Error loading inventory data:', error);
